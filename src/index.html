@@ -1,0 +1,259 @@
+<!doctype html>
+  <html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Restaurant Locator - by Algolia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- for the search only version -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/g/algoliasearch@3(algoliasearchLite.min.js),algoliasearch.helper@2"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+  </head>
+  <body>
+
+
+    <div class="global-container">
+      <div class="search-bar-container">
+        <input id="search" type="text" class="search" placeholder="Search for Restaurants by Name, Cuisine, Location">
+      </div>
+      <div id="facet-and-result" class="facet-and-result">
+        <div id="facet-list-container" class="facet-list-container">
+          <h3>Cuisine/Food Type</h3>
+          <ul id="facet-list-food_type" class="facet-list"></ul>
+          <h3>Payment Options</h3>
+          <ul id="facet-list-payment_options" class="facet-list"></ul>
+          <h3>Price Range</h3>
+          <ul id="facet-list-price_range" class="facet-list"></ul>
+        </div>
+        <div class="query-display">
+          <div id="info-container" class="info-container"></div>
+          <ul id="result-container" class="result-container"></ul>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+  <style>
+
+    body {
+      background-image: url('resources/graphics/background.png');
+      height: 100%;
+      overflow: hidden;
+      font: Helvetica;
+    }
+
+    .global-container {
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      margin: 100px;
+      overflow: hidden;
+    }
+    .search-bar-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 70px;
+      background-color: #1c688e;
+    }
+    .search {
+      width: 90%;
+      padding: 10px;
+    }
+
+    .result-container {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      overflow-y:scroll;
+    }
+
+    .facet-and-result{
+      display: flex;
+      overflow: hidden;
+    }
+
+    .query-display {
+      display: flex;
+      flex-direction: column;
+      margin-left: 50px;
+      margin-top: 30px;
+    }
+
+    .facet-list-container{
+      display: flex;
+      flex-direction: column;
+      min-width: 250px;
+      max-height: 100%;
+      float: left;
+      padding: 0 1em;
+      margin: 0;
+      overflow:scroll;
+    }
+
+    .facet-list{
+      padding: 6px 0;
+      list-style-type: none;
+    }
+
+    .info-container {
+      margin-left: 4rem;
+
+    }
+
+    .results-item {
+      display: block;
+      vertical-align: top;
+      height: 8rem;
+      padding: 0.8rem;
+      border: transparent;
+      margin: 0.3rem;
+    }
+
+    .results-item-image {
+      height: 8rem;
+      width: 8rem;
+      border-radius: 0.4rem;
+    }
+
+    .results-item-info {
+      display: inline-block;
+      vertical-align: top;
+      margin-left: 1.7rem;
+
+    }
+
+    .results-item-name {
+      margin-top: 10px;
+      font-size: 1.2rem;
+    }
+
+    .results-item-line {
+      margin-top: 0.7rem;
+    }
+
+    .results-item-line-description {
+      color: rgba(112,112,112,0.6);
+      font-size: 1rem;
+      font-weight: 300;
+      @include overflow-ellipses;
+    }
+
+    .results-item-rating {
+      color: #FFAB66;
+      font-size: 1.2rem;
+      vertical-align: middle;
+      margin-right: 0.8rem;
+    }
+
+    .results-item-review-count {
+      vertical-align: middle;
+      color: rgba(112,112,112,0.6);
+      font-size: 1rem;
+      margin-left: 0.8rem;
+      font-weight: 100;
+    }
+
+  </style>
+
+  <script type="text/javascript">
+    var input = document.getElementById("search");
+
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        document.getElementById("resu").innerHTML = input.value
+
+      }
+    }); 
+  </script>
+  <script type="text/javascript">
+    var applicationID = 'ZDTDVOFRC0';
+    var apiKey = 'c7115611af6293bfd1eda671d985a80b';
+    var indexName = 'restaurant';
+
+    var allFacets = ['food_type', 'payment_options', 'price_range']
+
+    var client = algoliasearch(applicationID, apiKey);
+    var helper = algoliasearchHelper(client, indexName, {
+      facets: allFacets
+    });
+
+    helper.on('result', function(content) {
+      renderInfo(content)
+      renderAllFacets(content);
+      renderHits(content);
+    });
+
+    function renderInfo(content) {
+      $('#info-container').html(function () {
+        return $('<p>').append(content.nbHits + ' results found in ' + content.processingTimeMS / 1000 + ' seconds ')
+      })
+    }
+
+    function renderHit(hit) {
+      return "<li class='results-item'> <img class='results-item-image' src=" + hit.image_url + "</img>" 
+      + "<div class='results-item-info'>"
+      +  "<h6 class='results-item-name'>" + hit.name + "</h6>"
+      + "<div class='results-item-line'>"
+      +  "<span class='results-item-rating'>" + hit.stars_count + " stars " + "</span>"
+      + "<span class='results-item-review-count'>" + "( " + hit.reviews_count + " reviews)" + "</span>"
+      + "</div>"
+      + "<div class='results-item-line results-item-line-description'>"
+      + "<span class='description-item'>" + hit.food_type + " | " + hit.neighborhood + " | " + hit.price_range + "</span>"
+      + "</div>"
+      + "</div>" + '</li>';
+    }
+
+    function renderHits(content) {
+      $('#result-container').html(function() {
+        return $.map(content.hits, function(hit) {
+          return renderHit(hit)
+        });
+      })
+    }
+
+    for (const facetType of allFacets) {
+      $('#facet-list-'+facetType).on('click', 'input[type=checkbox]', function(e) {
+        var facetValue = $(this).data('facet');  
+        helper.toggleRefinement(facetType, facetValue)
+        .search();
+      });
+    }
+
+    function renderAllFacets(content) {
+      for (const facetType of allFacets) {
+        renderFacetList(content, facetType)
+      }
+    }
+
+    function renderFacetList(content, facetType) {
+      $('#facet-list-' + facetType).html(function() {
+        return $.map(content.getFacetValues(facetType), function(facet) {
+          var checkbox = $('<input type=checkbox>')
+          .data('facet', facet.name)
+          .attr('id', 'fl-' + facet.name);
+          if(facet.isRefined) checkbox.attr('checked', 'checked');
+          var label = $('<label>').html(facet.name + ' (' + facet.count + ')')
+          .attr('for', 'fl-' + facet.name);
+          return $('<li>').append(checkbox).append(label);
+        });
+      });
+    }
+
+    $('#search').on('keyup', function() {
+      helper.setQuery($(this).val())
+      .search();
+    });
+
+    helper.search();
+
+  </script>
+
+</html>
+
