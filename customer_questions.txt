@@ -1,0 +1,134 @@
+> Question 1: Hello,
+>
+> I'm new to search engines, and there are a lot of concepts I'm 
+> not educated on. To make my onboarding smoother, it'd help if 
+> you could provide me with some definitions of the following concepts:
+>
+>    Records
+>    Indexing
+>
+> I'm also struggling with understanding what types of metrics
+> would be useful to include in the "Custom Ranking."
+>
+> Cheers, George
+
+Answer 1:
+
+Hello George,
+
+Welcome to Algolia ! I know there are a lot of new concepts 
+when you start the search engine, I'm glad to answer your questions.
+
+To set up a search engine, the first step is to collect and store 
+all the data on which you want to search. This is indexing. Unlike a data table, 
+an index is optimized for search operations. For example, in an ecommerce 
+website, the index would be a complete list of all products.
+Algolia creates the index automatically when you add your first object, you don't
+need to create it explicitly.
+If you want to find out more about indexing at Algolia, you can look at this
+page: https://www.algolia.com/doc/api-client/methods/indexing/.
+
+Then, a record is an object you add to an index and want to search for.
+It can contain any number of attributes.
+To take the same example of the ecommerce website, one product and all its attributes
+would be a record.
+You can find more detail here:
+https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/in-depth/what-is-in-a-record/
+
+Finally, once everything is set up the user can search the ecommerce website. 
+All returned results are accurate, but in which order should they be displayed?
+Thanks to custom ranking, you are in control on which record appear in the
+first results. This way, you can increase visibility for your most essential 
+products.
+More information about custom ranking here:
+https://www.algolia.com/doc/guides/managing-results/must-do/custom-ranking/
+
+
+I hope this helps, don't hesitate to contact me if you have any other questions.
+
+Have a good day,
+
+Best regards,
+Fiona Carbonell
+Solutions Engineer
+
+
+
+> Question 2: Hello,
+> 
+> Sorry to give you the kind of feedback that I know you do
+> not want to hear, but I really hate the new dashboard design.
+> Clearing and deleting indexes are now several clicks away.
+> I am needing to use these features while iterating, so this
+> is inconvenient.
+>
+> Regards, Matt
+
+
+Answer 2:
+
+Hello Matt,
+
+Thank you for taking the time to share your experience, we are always happy to
+hear about ways we can improve our products.
+
+I am so sorry that the design update didn't help you as much as we hoped. Our goal 
+is to provide the best user experience for each of our customers and we will look at 
+how we can make clearing and deleting indexes more convenient for you.
+
+In case it helps, here is a guide to improving data integration and synchronisation:
+
+https://www.algolia.com/doc/guides/sending-and-managing-data/send-and-update-your-data/
+https://www.algolia.com/doc/guides/sending-and-managing-data/send-and-update-your-data/in-depth/the-different-synchronization-strategies/
+
+
+Please, feel free to share with us any other feedback and let me know if you need anything.
+
+Have a good day,
+
+Best regards,
+Fiona Carbonell
+Solutions Engineer
+
+
+> Question 3: Hi,
+> 
+> I'm looking to integrate Algolia in my website. Will this
+> be a lot of development work for me? What's the high level
+> process look like?
+>
+> Regards, Leo
+
+Answer 3:
+
+Hi Leo,
+
+
+I am glad to hear you are thinking about integrating Algolia !
+
+The integration time depends on a lot of parameters like the organization of
+your data, what you want to do with Algolia, and the UI of your website/application.
+
+Implementation time ranges from 5 minutes to a couple of weeks for the most 
+complex projects, but most of our users have a complete search within one
+to ten days.
+
+Most of the work is usually to redesign and rethink the user experience
+of your website or application.
+
+To have a better overview of each step of implementations, you can check
+our quick start which explains the steps involved in setting up a project:
+
+https://www.algolia.com/doc/guides/getting-started/quick-start/
+
+
+Please feel free to send an email if you have any question during the process
+set up.
+
+Have a good day,
+
+Best regards,
+Fiona Carbonell
+Solutions Engineer
+
+
