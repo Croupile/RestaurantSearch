@@ -9,13 +9,13 @@ def main() -> None:
     restaurant_info = pd.read_csv('dataset/restaurants_info.csv', sep=';')
     restaurant_list = pd.read_json('dataset/restaurants_list.json')
     restaurant = restaurant_list.merge(restaurant_info, on='objectID', how='left')
-    
+
     #  List of available payment options
     payement_list = ['Visa', 'MasterCard', 'AMEX', 'Discover', 'Diners Club', 'Carte Blanche']
     
     #  Clean options payment
     restaurant['payment_options'] = restaurant.payment_options.apply(lambda x: intersection(x, payement_list))
-    
+   
     #  Drop useless columns
     restaurant = restaurant.drop(columns=['phone', 'phone_number', 'address', 'dining_style', 'state', 'price',
                                           'country', 'postal_code'])

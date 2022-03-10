@@ -126,7 +126,6 @@
       display: inline-block;
       vertical-align: top;
       margin-left: 1.7rem;
-
     }
 
     .results-item-name {
@@ -161,16 +160,22 @@
     }
 
   </style>
-
   <script type="text/javascript">
-    var input = document.getElementById("search");
+    window.onload = function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(savePosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
 
-    input.addEventListener("keyup", function(event) {
-      if (event.keyCode === 13) {
-        document.getElementById("resu").innerHTML = input.value
+    function savePosition(position) {
+      localStorage.setItem("loc", JSON.stringify({
+        "lat": position.coords.latitude,
+        "long": position.coords.longitude
+      }));
+  }
+}
 
-      }
-    }); 
   </script>
   <script type="text/javascript">
     var applicationID = 'ZDTDVOFRC0';
@@ -184,8 +189,15 @@
       facets: allFacets
     });
 
+    function getPosition() {
+      if(localStorage.getItem("loc")) {
+        var location = JSON.parse(localStorage.getItem("loc"));
+        helper.setQueryParameter('aroundLatLng', location.lat + ', ' + location.long);
+      }
+    }
+
     helper.on('result', function(content) {
-      renderInfo(content)
+      renderInfo(content);
       renderAllFacets(content);
       renderHits(content);
     });
@@ -247,6 +259,7 @@
     }
 
     $('#search').on('keyup', function() {
+      getPosition()
       helper.setQuery($(this).val())
       .search();
     });
